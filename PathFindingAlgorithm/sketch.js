@@ -102,7 +102,7 @@ function setup (){
 
 function draw () {
     
-    if (openSet.length > 0 && done == 0){ // is there are still spots in the open set
+    if (openSet.length > 0){ // is there are still spots in the open set
     // we can keep trying to find a solution
         var winner = 0;         // create a winner spot
         for (var i = 0; i < openSet.length; i++){ // for each i in open set
