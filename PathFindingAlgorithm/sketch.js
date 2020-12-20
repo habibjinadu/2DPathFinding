@@ -104,7 +104,7 @@ function setup (){
     
     
     start = grid[0][0]; // start spot is at position (0,0)
-    end = grid[17][19]; // end spot is at (cols-1, rows-20)
+    end = grid[17][19]; // end spot is at (cols-1, rows-20).
     
     openSet.push(start);  // put the starting spot at the beginning of the open set.
     for (var i = 0; i < cols; i++)
