@@ -11,11 +11,11 @@ function removeFromArray (arr, elt) {  // this function removes a elt in an arra
     
 }
 function heuristic (a,b){
-    return dist(a.i,a.j,b.i,b.j) * 10; // calculate the straight light distance from point a to point b
+    return dist(a.i,a.j,b.i,b.j) * 10*w; // calculate the straight light distance from point a to point b
 }
 var cols = 20; // Grid map with 50  columns
 var rows = 20; // Grid map with 50 rows
-var grid = new Array(cols); // Make a grid array with the amount of entries is equal to the number of columns
+var grid = new Array(cols); // Make a grid array what will contain the amount of spots in the array
 var w,h; // w and h variable describes the pixel width and height of each spot in the grid
 var path = []; // holds the path from the starting point to the ending point
 
@@ -104,9 +104,16 @@ function setup (){
     
     
     start = grid[0][0]; // start spot is at position (0,0)
-    end = grid[cols - 1][rows - 5]; // end spot is at (cols-1, rows-20)
+    end = grid[1][3]; // end spot is at (cols-1, rows-20)
     
     openSet.push(start);  // put the starting spot at the beginning of the open set
+    for (var i = 0; i < cols; i++)
+    
+        for (var j = 0; j < rows; j++)
+        {
+            grid[i][j].h = heuristic(grid[i][j], end);  
+            grid[i][j].f = grid[i][j].g + grid[i][j].h;
+        }  
 }
 
 function draw () {
@@ -121,8 +128,9 @@ function draw () {
         var current = openSet[winner];          // is the winner spot is our end spot
         if (current == end) {                   // the algorithim is done
             noLoop()                            // do not loop anymore.
-            //done = 1;                           // the algorithm is done and you can exit the if statement.
             console.log("DONE like dinner!");
+
+        }
             //Find the path
             var temp = current;                 // create a temporary spot object
             path.push(temp);                    // put it at the end of the path
@@ -132,11 +140,11 @@ function draw () {
             }
             
             
-        }
+        
         
         removeFromArray(openSet, current);      // remove current spot from the open set because it has been explored
         closedSet.push(current);                // put the current spot at the end of the closed set
-        //WE STOPPED HERE!!!!!!!!!!!!!!!!
+
         
         var neighbours = current.neighbours;    // make a variable for the neighbours of current
         for (var i = 0; i < neighbours.length; i++){    //  for each neighbour of the current spot
@@ -146,10 +154,10 @@ function draw () {
             // calculating the G-score for the neighbours
             if (!closedSet.includes(neighbour)){  // if this neighbour is not in the closed set
 
-                if (neighbour.i != current.i && neighbour.j != current.j)       // if this is a diagonal neighbour
+                if (neighbour.i == current.i || neighbour.j == current.j)       // if this is not a diagonal neighbour
                     var tempG = current.g + 10*w;          // tempG variable holds the g-score of the current spot plus 10
                 else 
-                    var tempG = current.g + 14*w;           // tempG variable holds the g-score of the current spot plus 14
+                    var tempG = current.g + 14*w;           // tempG variable holds the g-score of the current spot plus 14 because travelling diagonally is longer distance by root(2)
 
                 if (openSet.includes(neighbour) && tempG < neighbour.g){    // if the neighbour is already in the open set AND it's G-score is higher that the newly calculated tempG
                     neighbour.g = tempG;                                    // then the new g-score of the neighbout is tempG
@@ -182,21 +190,27 @@ function draw () {
             grid[i][j].show(color(150,134,1)); // each grid[i][j] is this color
         }
     }
+
     
     // visualize the closed set on the grid in red
     for (var i = 0; i < closedSet.length; i++){ // for all i in the closed set
         closedSet[i].show(color(255,0,0));
     }
-    
+
+    // visualize the path in green
+    for (var i = 0; i < path.length; i++){ // for all spots in the path 
+        path[i].show(color(0,255,0));       // display the color in green
+    }
+    path = [];
+
+
     // visualize the open set on the grid in black
     for (var i = 0; i < openSet.length; i++){ // for all i in the open set 
         openSet[i].show(color(0,0,0));
     }
     
-    // visualize the path in green
-    for (var i = 0; i < path.length; i++){ // for all spots in the path 
-        path[i].show(color(0,255,0));
-    }
+
+    
     
     
 }
