@@ -36,10 +36,16 @@ function Spot (i,j) {
     this.h = 0; // h score (g_score + f_score) 
     this.neighbours = []; // surrounding tiles
     this.parent = null; // parent spot that discovered the spot
+    this.wall = false; // if true, the spot is an obstacle. If false, the object is walkable
     
+    if (random(1) < 0.3)        // 30% of the time this will be true
+        this.wall = true;       // this spot is a wall 30% of the time
     // Displays the spot on the canvas
     this.show = function (col) {
-        fill(col); // color the spot
+        if (this.wall == true)          // if this spot is a wall
+            fill(0);            // color it black
+        else     
+            fill(col); // color the spot     
         noStroke(); // remove the outline stroke for the spot
         rect(this.i * w, this.j * h, w-1, h-1); // draw the rectangle for the spot
         
@@ -91,7 +97,7 @@ function setup (){
     // Making a Spot object for each 2d array.
     for (var i = 0; i < cols; i++){         // for each i in columns
         for(var j = 0; j < rows; j++){      // for each j in rows
-            grid[i][j] = new Spot (i,j); // make a new Spot object for all i and j in grid
+            grid[i][j] = new Spot (i,j);    // make a new Spot object for all i and j in grid
         }
     }
     
@@ -114,6 +120,8 @@ function setup (){
             grid[i][j].h = heuristic(grid[i][j], end);  // make the heuristic (dist to end) for all spots
             grid[i][j].f = grid[i][j].g + grid[i][j].h; // compute the f score for all spots 
         }  
+
+    //grid[1][1].wall = true; // make this a wall
 }
 
 function draw () {
@@ -152,7 +160,7 @@ function draw () {
             
             
             // calculating the G-score for the neighbours
-            if (!closedSet.includes(neighbour)){  // if this neighbour is not in the closed set
+            if (!closedSet.includes(neighbour) && neighbour.wall == false){  // if this neighbour is not in the closed set && the neighbour is not a wall
 
                 if (neighbour.i == current.i || neighbour.j == current.j)       // if this is not a diagonal neighbour
                     var tempG = current.g + 10*w;          // tempG variable holds the g-score of the current spot plus 10
@@ -205,7 +213,7 @@ function draw () {
 
     // visualize the open set on the grid in black
     for (var i = 0; i < openSet.length; i++){ // for all i in the open set 
-        openSet[i].show(color(0,0,0));
+        openSet[i].show(color(255,255,255));  // display the color white
     }
     
 
