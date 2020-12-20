@@ -85,17 +85,7 @@ function Spot (i,j) {
 function mousePressed()
 {
     
-    if (mouseX < 400 && mouseY < 400)
-    {
-        for (var x = 0; x < 20; x++)
-        {
-            for(var y = 0; y < 20; y++)
-            {
-                if (grid[x][y].i*w < mouseX && (grid[x][y].i*w + w) > mouseX && grid[x][y].j*h < mouseY && (grid[x][y].j*h + h) > mouseY) // if the mouse if pressed over a box
-                    grid[x][y].wall = true;   // make it a wall
-            }
-        }
-    }
+    
 }
 
 function keyPressed()
@@ -151,6 +141,17 @@ function setup (){
 
 function draw () {
 
+    if (mouseX < 400 && mouseY < 400 && mouseIsPressed)     // if the mouse is currentply pressed and is within the grid boundary
+    {
+        for (var x = 0; x < 20; x++)
+        {
+            for(var y = 0; y < 20; y++)
+            {
+                if (grid[x][y].i*w < mouseX && (grid[x][y].i*w + w) > mouseX && grid[x][y].j*h < mouseY && (grid[x][y].j*h + h) > mouseY) // if the mouse if pressed over a box
+                    grid[x][y].wall = true;   // make it a wall
+            }
+        }
+    }
    
     if (openSet.length > 0 && startFinding == true){ // if there are still spots in the open set and a key has been pressed
     // we can keep trying to find a solution
