@@ -104,7 +104,7 @@ function setup (){
     
     
     start = grid[0][0]; // start spot is at position (0,0)
-    end = grid[1][3]; // end spot is at (cols-1, rows-20)
+    end = grid[1][10]; // end spot is at (cols-1, rows-20)
     
     openSet.push(start);  // put the starting spot at the beginning of the open set
     for (var i = 0; i < cols; i++)
@@ -161,7 +161,7 @@ function draw () {
 
                 if (openSet.includes(neighbour) && tempG < neighbour.g){    // if the neighbour is already in the open set AND it's G-score is higher that the newly calculated tempG
                     neighbour.g = tempG;                                    // then the new g-score of the neighbout is tempG
-                    neighbour.parent = current;                             // the new parent is the current node
+                    neighbour.parent = current;                             // the new parent is the current spot because it is a better path to that spot
                 }
                 else if (openSet.includes(neighbour) && tempG >= neighbour.g)
                 {
@@ -177,7 +177,6 @@ function draw () {
             
             neighbour.h = heuristic(neighbour,end); // calculate the h_score for the neighbour (distance between the neighbout and the end spot)
             neighbour.f = neighbour.g + neighbour.h; // calculate the f score of the neighbour (g_score + h_score)
-            neighbour.parent = current; //  
             }
         }
     }else {
