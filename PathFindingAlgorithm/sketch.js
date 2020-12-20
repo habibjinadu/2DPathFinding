@@ -1,6 +1,7 @@
 
 
 
+
 function removeFromArray (arr, elt) {  // this function removes a elt in an array called arr
    for (var i = arr.length -1; i >= 0; i--){ // loop through the array backwards
        if (arr[i] == elt){ // is the object in this index is equal to elt
@@ -9,9 +10,8 @@ function removeFromArray (arr, elt) {  // this function removes a elt in an arra
    }
     
 }
-
 function heuristic (a,b){
-    return dist (a.i,a.j,b.i,b.j); // calculate the straight light distance from point a to point b
+    return dist(a.i,a.j,b.i,b.j) * 10; // calculate the straight light distance from point a to point b
 }
 var cols = 20; // Grid map with 50  columns
 var rows = 20; // Grid map with 50 rows
@@ -50,10 +50,19 @@ function Spot (i,j) {
 
 
         if (i < cols - 1){                      // if this spot is not at the right end of the grid
-        this.neighbours.push(grid[i + 1][j]);  // Add the neighbour to the left
+            this.neighbours.push(grid[i + 1][j]);   // Add the neighbour to the right
+            if (j < rows - 1)
+                this.neighbours.push(grid[i+1][j+1]);   // Add neighbour to the bottom right
+            if (j > 0)
+                this.neighbours.push(grid[i+1][j-1]);   // Add neighbour to the top right
         }
+
         if (i > 0){                                 // if this spot is not at the left end of the grid
-            this.neighbours.push(grid[i - 1] [j]);  // Add the neighbout to the left
+            this.neighbours.push(grid[i - 1] [j]);  // Add the neighbour to the left
+            if (j < rows - 1)                           // if this spot is not at the bottom
+                this.neighbours.push(grid[i-1][j+1]);   // Add neighbour to the bottom left
+            if (j > 0)                              // if this spot is not at the top
+            this.neighbours.push(grid[i-1][j-1]);   // Add neighnout to the top left
         }
         
         if (j < rows - 1){                          // if this spot is not at bottom of the grid
@@ -136,7 +145,12 @@ function draw () {
             
             // calculating the G-score for the neighbours
             if (!closedSet.includes(neighbour)){  // if this neighbour is not in the closed set
-                var tempG = current.g + 1;          // tempG variable holds the g-score of the current spot plus 1 
+
+                if (neighbour.i != current.i && neighbour.j != current.j)       // if this is a diagonal neighbour
+                    var tempG = current.g + 10*w;          // tempG variable holds the g-score of the current spot plus 10
+                else 
+                    var tempG = current.g + 14*w;           // tempG variable holds the g-score of the current spot plus 14
+
                 if (openSet.includes(neighbour) && tempG < neighbour.g){    // if the neighbour is already in the open set AND it's G-score is higher that the newly calculated tempG
                     neighbour.g = tempG;                                    // then the new g-score of the neighbout is tempG
                     neighbour.parent = current;                             // the new parent is the current node
