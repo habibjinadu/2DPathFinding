@@ -13,8 +13,8 @@ function removeFromArray (arr, elt) {  // this function removes a elt in an arra
 function heuristic (a,b){
     return dist (a.i,a.j,b.i,b.j); // calculate the straight light distance from point a to point b
 }
-var cols = 50; // Grid map with 50  columns
-var rows = 50; // Grid map with 50 rows
+var cols = 20; // Grid map with 50  columns
+var rows = 20; // Grid map with 50 rows
 var grid = new Array(cols); // Make a grid array with the amount of entries is equal to the number of columns
 var w,h; // w and h variable describes the pixel width and height of each spot in the grid
 var path = []; // holds the path from the starting point to the ending point
@@ -95,7 +95,7 @@ function setup (){
     
     
     start = grid[0][0]; // start spot is at position (0,0)
-    end = grid[cols - 1][rows -20]; // end spot is at (cols-1, rows-20)
+    end = grid[cols - 1][rows - 5]; // end spot is at (cols-1, rows-20)
     
     openSet.push(start);  // put the starting spot at the beginning of the open set
 }
@@ -111,6 +111,7 @@ function draw () {
         }
         var current = openSet[winner];          // is the winner spot is our end spot
         if (current == end) {                   // the algorithim is done
+            noLoop()                            // do not loop anymore
             //done = 1;                           // the algorithm is done and you can exit the if statement.
             console.log("DONE like dinner!");
             //Find the path
@@ -174,12 +175,12 @@ function draw () {
     }
     
     // visualize the open set on the grid in black
-    for (var i = 0; i < openSet.length; i++){ // for all i in the 
+    for (var i = 0; i < openSet.length; i++){ // for all i in the open set 
         openSet[i].show(color(0,0,0));
     }
     
     // visualize the path in green
-    for (var i = 0; i < path.length; i++){
+    for (var i = 0; i < path.length; i++){ // for all spots in the path 
         path[i].show(color(0,255,0));
     }
     
