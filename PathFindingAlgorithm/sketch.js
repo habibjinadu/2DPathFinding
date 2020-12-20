@@ -111,7 +111,7 @@ function draw () {
         }
         var current = openSet[winner];          // is the winner spot is our end spot
         if (current == end) {                   // the algorithim is done
-            noLoop()                            // do not loop anymore
+            noLoop()                            // do not loop anymore.
             //done = 1;                           // the algorithm is done and you can exit the if statement.
             console.log("DONE like dinner!");
             //Find the path
