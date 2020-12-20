@@ -24,7 +24,7 @@ var openSet = []; // make a variable the holds all of the spots that may be expl
 var closedSet = []; // stores all of the nodes that have been explored 
 var start; // start spot
 var end; // end spot
-//var done = 0; // represents the end of the search 
+//var done = 0; // represents the end of the search and looping can stop
 
 
 // create a Spot object
