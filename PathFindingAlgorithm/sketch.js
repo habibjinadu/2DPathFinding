@@ -24,6 +24,7 @@ var openSet = []; // make a variable the holds all of the spots that may be expl
 var closedSet = []; // stores all of the nodes that have been explored 
 var start; // start spot
 var end; // end spot
+var startFinding = false;  // is a key is pressed start finding will be true
 //var done = 0; // represents the end of the search and looping can stop
 
 
@@ -38,8 +39,8 @@ function Spot (i,j) {
     this.parent = null; // parent spot that discovered the spot
     this.wall = false; // if true, the spot is an obstacle. If false, the object is walkable
     
-    if (random(1) < 0.3)        // 30% of the time this will be true
-        this.wall = true;       // this spot is a wall 30% of the time
+    //if (random(1) < 0.3)        // 30% of the time this will be true
+        //this.wall = true;       // this spot is a wall 30% of the time
     // Displays the spot on the canvas
     this.show = function (col) {
         if (this.wall == true)          // if this spot is a wall
@@ -68,7 +69,7 @@ function Spot (i,j) {
             if (j < rows - 1)                           // if this spot is not at the bottom
                 this.neighbours.push(grid[i-1][j+1]);   // Add neighbour to the bottom left
             if (j > 0)                              // if this spot is not at the top
-            this.neighbours.push(grid[i-1][j-1]);   // Add neighnout to the top left
+            this.neighbours.push(grid[i-1][j-1]);   // Add neighbour to the top left
         }
         
         if (j < rows - 1){                          // if this spot is not at bottom of the grid
@@ -80,6 +81,27 @@ function Spot (i,j) {
         }
         
     }
+}
+function mousePressed()
+{
+    
+    if (mouseX < 400 && mouseY < 400)
+    {
+        for (var x = 0; x < 20; x++)
+        {
+            for(var y = 0; y < 20; y++)
+            {
+                if (grid[x][y].i*w < mouseX && (grid[x][y].i*w + w) > mouseX && grid[x][y].j*h < mouseY && (grid[x][y].j*h + h) > mouseY) // if the mouse if pressed over a box
+                    grid[x][y].wall = true;   // make it a wall
+            }
+        }
+    }
+}
+
+function keyPressed()
+{
+        if (keyCode === ENTER)
+            startFinding = true;       // start path finding
 }
 function setup (){
     
@@ -110,7 +132,7 @@ function setup (){
     
     
     start = grid[0][0]; // start spot is at position (0,0)
-    end = grid[17][19]; // end spot is at (cols-1, rows-20).
+    end = grid[19][19]; // end spot is at (cols-1, rows-20).
     
     openSet.push(start);  // put the starting spot at the beginning of the open set.
     for (var i = 0; i < cols; i++)
@@ -120,13 +142,17 @@ function setup (){
             grid[i][j].h = heuristic(grid[i][j], end);  // make the heuristic (dist to end) for all spots
             grid[i][j].f = grid[i][j].g + grid[i][j].h; // compute the f score for all spots 
         }  
-
+    
+ 
+  
     //grid[1][1].wall = true; // make this a wall
 }
 
+
 function draw () {
-    
-    if (openSet.length > 0){ // is there are still spots in the open set
+
+   
+    if (openSet.length > 0 && startFinding == true){ // if there are still spots in the open set and a key has been pressed
     // we can keep trying to find a solution
         var winner = 0;         // create a winner spot
         for (var i = 0; i < openSet.length; i++){ // for each i in open set
