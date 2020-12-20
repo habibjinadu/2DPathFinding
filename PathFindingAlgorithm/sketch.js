@@ -132,10 +132,7 @@ function setup (){
             grid[i][j].h = heuristic(grid[i][j], end);  // make the heuristic (dist to end) for all spots
             grid[i][j].f = grid[i][j].g + grid[i][j].h; // compute the f score for all spots 
         }  
-    
- 
-  
-    //grid[1][1].wall = true; // make this a wall
+        
 }
 
 
